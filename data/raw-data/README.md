@@ -1,14 +1,13 @@
 # raw-data
 
-This folder should contain all raw data. As needed add sub-folders.
+This folder contains all raw data for the *MADA Spring 2026 Project*.
 
-Currently, as an example, it contains a simple made-up data-set in an Excel file.
+All datasets with a 7-digit code and state identifier belong to https://www.ncei.noaa.gov/data/global-summary-of-the-month/. These include weather data from field stations from individual states within the southeastern United States.
 
-The dataset contains the variables `Height`, `Weight` and `Gender` of a few imaginary individuals.
+The **NNDSS_Weekly_Data** corresponds to arboviral cases from 2022-2025 by state.
 
-The dataset purposefully contains some faulty entries that need to be cleaned.
+The **NST-EST2025-COMP** and **annual-estimates-resident-population** datasets are sourced from the U.S. Census Bureau, Population Division
 
-Generally, any dataset should contain some meta-data explaining what each variable in the dataset is. (This is often called a **Codebook**.) For this simple example, the codebook is given as a second sheet in the Excel file.
+More information on variable data will be input throughout the semester. The datasets are not cleaned at this time.
 
-This raw data-set should generally not be edited by hand. It should instead be loaded and processed/cleaned using code.
-
+Citations will be added at a later time.
