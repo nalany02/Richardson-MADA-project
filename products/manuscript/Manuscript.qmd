@@ -1,6 +1,6 @@
 ---
-title: "Example Manuscript Template for a Data Analysis Project"
-author: ""
+title: "Assessing Ornithophilic Mosquito Attraction to Avian Volatile-baited Traps"
+author: "Nalany Richardson"
 format:
   docx:
     toc: false
@@ -10,150 +10,125 @@ bibliography: ../../assets/dataanalysis-references.bib
 csl: ../../assets/american-journal-of-epidemiology.csl
 ---
 
-The structure below is one possible setup for a manuscript stemming from a data analysis project. It loosely follows the structure of a standard scientific manuscript. Adjust as needed. You don't need to have exactly these sections, but the content covering those sections should be addressed.
-
-This uses [MS Word as output format](https://quarto.org/docs/output-formats/ms-word.html). See [the Quarto documentation](https://quarto.org/) for instructions on how to use other formats.
-
-
 ```{r, echo=FALSE, message=FALSE}
 # load a few R packages
 library(here)
 library(knitr)
 ```
 
+**Authors**
 
-**Authors**  
+-   Nalany Richardson$^{1,2,*}$ (ORCID: 0009-0002-0540-0356)
 
-* Nalany Richardson$^{1,2,*}$ (ORCID: 0009-0002-0540-0356) 
+**Author affiliations**
 
-
-**Author affiliations**  
-
-1. College of Veterinary Medicine, University of Georgia, Athens, GA, USA.
-2. Savannah River Ecology Lab, Jackson, SC, USA.
+1.  College of Veterinary Medicine, University of Georgia, Athens, GA, USA.
+2.  Savannah River Ecology Lab, Jackson, SC, USA.
 
 $*$ These authors contributed equally to this work.
 
-$\land$ Corresponding author: nr15837@uga.edu
+$\land$ Corresponding author: nr15837\@uga.edu
 
-$\dagger$ Disclaimer: The opinions expressed in this article are the
-author's own and don't reflect their employer.
-
+$\dagger$ Disclaimer: The opinions expressed in this article are the author's own and don't reflect their employer.
 
 {{< pagebreak >}}
-
-
 
 # Summary/Abstract
-This project seeks to evaluate whether weather conditions and population composition predict arboviral case burden across eight southeastern U.S. states. 
 
-The primary outcome will be weekly/monthly arboviral case counts, modeled with population as an offset so results are interpreted as incidence risk. 
-
-Key predictors will include monthly weather metrics (e.g.,`temperature` and `precipitation`), and `state`, as well as `year` and `month`.
-
-A second aim will assess whether population proportions (based on available demographic variables) explain additional variation in cases beyond weather alone. The analysis will also test lagged weather effects (e.g., 1–3 month lags) to capture biologically realistic delays between environmental conditions and transmission, and examine whether weather–case relationships differ by state through interaction terms. I wanted to seek out this relationship as previous work I've done has seen lag of 8-12 weeks between weather events such as hurricanes and spikes in Aedes albopictus/aegypti mosquito populations, and subsequent outbreaks of arboviral diseases such as dengue and Zika in Puerto Rico.
-
-I expect that higher temperatures and increased precipitation will be associated greatly with increased arboviral case burden, as these align with favorable breeding conditions for mosquito vectors. I also expect that rather than state population, state geography specifically along with weather data will better predict case burden. 
-
-Background/Methods/Results/Discussion sections._
-
+This project evaluates whether field-deployed chemical blends of bird-derived volatile organic compounds (VOCs) can improve mosquito trap efficacy, with a particular focus on increasing capture of ornithophilic mosquitoes that drive enzootic transmission of Eastern Equine Encephalitis Virus (EEEV) in the southeastern United States. Using paired trap deployments at the Savannah River Site in Jackson, SC (blend-treated traps versus pentane controls), and complementary trapping data for height spanning over the last 2 years, I'm looking to quantify differences in total abundance and species diversity across blends, dates, and deployment conditions. I integrated trap-pair species counts and an ornithophilicity reference table to test whether blends preferentially increase captures of bird-feeding species, and whether environmental/operational factors modify capture rates. This work aims to identify a host-relevant, cost-effective lure that could enhance ornithophilic surveillance and reduce reliance on sentinel animals, informing improved mosquito control and arboviral monitoring strategies.
 {{< pagebreak >}}
 
+# Introduction
 
-# Introduction 
+This project is focused on assessing mosquito abundance and species diversity in relation to olfactory manipulation of traditional mosquito traps. The goal is to develop a chemical blend that can be deployed in the field to increase the efficacy of traps for ornithophilic mosquitoes, which are important vectors of diseases such as Eastern Equine Encephalitis Virus (EEEV). The results of this project aim inform greater control and surveillance strategies for mosquito-borne diseases in the southeastern United States.
 
 ## General Background Information
-_Provide enough background on your topic that others can understand the why and how of your analysis_ 
+
+Hematophagous insects, such as mosquitoes, are responsible for the transmission of a variety of pathogens that cause disease in humans and non-human animals. Worldwide, mosquito-borne diseases are responsible for an estimated 700,000 deaths annually (1). In the United States, mosquito-borne diseases are a growing public health concern, with increasing incidence and geographic spread of diseases such as West Nile virus, dengue, and Zika virus (1).
+
+Of interest are ornithophilic mosquitoes, who sequester bloodmeals from birds and either incidentally or secondarily feed on other animals. Out of the dozens of species in the southeastern United States, Culiseta melanura is of great concern, due to its implication and necessity in the transmission and environmental buildup of Eastern Equine Encephalitis Virus (EEEV) (2) (3). EEEV is a positive-sense RNA virus, coined an ‘arbovirus’ for its arthropod vector, and is the most lethal mosquito-borne virus in the United States, with case lethality rates ranging from 35-75%. In September 2025, South Carolina Department of Public Health confirmed the first death associated with EEEV in over 20 years. In the same year, two cases were found in equids , with both horses dying shortly thereafter.
+
+Mosquitoes rely on a vast array of sensory cues in order to locate, orient to, and feed on a given host (e.g., olfaction, thermosensation, mechanosensation, vision, moisture)(4). My focus is in the realm of olfactory attraction, as little is known about the breadth of volatile organic compounds (VOCs) that ornithophilic mosquitoes hone in on to access attraction in a host. Laboratory and field assays have shown that uropygial gland excretions, and feather extracts, of chickens and pigeons indeed show preferential attraction when compared to other ‘attractive’ controls such as hexane or pentane(5–7), though there are numerous issues with this approach.
+
+For one, olfaction is not the be-all-end-all of attraction, and mosquitoes display increased attraction to hosts or traps when multivariable cues are attached. Secondly, while Sentinel chickens are used for arboviral virus surveillance and monitoring by researchers and mosquito control departments, chickens are not the primary host of target ornithophilic mosquitoes(4,8). Third, utilizing subsets of a bird’s volatilome (e.g., uropygial gland, feathers, breath) does not capture the full ‘picture’ that a mosquito would sense, and forgoes cues such as age, health, behavior, sex, and environmental factors. In fact, these factors point to the idea that mosquitoes will preferentially target animals based on their density within an area, displaying mating behaviors (e.g., vocalizations, dances, marking)(9,10).
+
+Due to the complex and integrated transmission cycle Cs. melanura, EEEV, host birds, and bridge vectors permit, there is a great need for targeted and cost-effective additives or solutions to current trap regimes for mosquito control districts and researchers.
+
+By deploying bird-derived VOCs blends from the literature in the field at the Savannah River Site in Jackson, SC, along with accounting for variables such as total abundance, site, species, date, and trap height, I plan to develop a primary-host-specific chemical blend that can be deployed in-field, reducing labor and facility costs by replacing Sentinel chicken use, increasing ornithophilic trapping efficacy, and thereby informing greater control and surveillance strategies.
 
 ## Description of data and data source
-_Describe what the data is, what it contains, where it is from, etc. Eventually this might be part of a methods section._
+
+At of the time of this writing, I have 4 datasets I will be using in tandem. More outsourced data sources may be included as needed.
+
+-   blend-data: contains `date`, `site`, `blend` type, `treatment` mosquito count, `control` mosquito count, `trap` type, `height` of deployed trap, and `% responders in treatment`. Description: This specific data was collected over the course of 1 summer field season in 2025 and ended in early October 2025. Pairs of UV-led mosquito traps with carbon dioxide in the form of dry ice 0.5L-1L cooler jugs (11) were deployed to 1 fieldsite (Robins Road abbr. RBNR). Of each pair, the control trap had attached photosensitive glass with a cotton wick containing a chemical blend A or B derived from the literature, and the control would have pentane attached. Traps were placed 6-feet apart and deployed at noon/dusk and collected the next day. Traps were placed in a freezer and subsequently sorted, with mosquitoes captured being identified morphologically via a dichotomous key(12).
+
+-   height-data: contains `date_trapped`, `genus`, `species`, `sex`, `trap_type`, `height`, `location`, and `date_ID`. Description: CDC light traps and UV-led traps were placed in 1 field site (Flamingo bay abbr. FLB) in the Savannah River Site. Traps were either deployed at `midlevel`, around 5ft, or `10ft`. Traps were deployed at noon/dusk and retrieved the following morning or early afternoon, frozen, then sorted. Mosquitoes were identified as previously described, with the inclusion of identification of sex. This dataset was collected between August 2024 and June 2025.
+
+-   identifications-data: contains mosquito species count by trap date, type, treatment, and pair. Some points were improperly stored and adjusted in `blend-data`. I’ve included this data set as it’s imperative to clean and double check blend-data for accuracy.
+
+-   ornithophilicity-text: simple text .csv of species found in the southeastern United States that are known to be 1.) primarily ornithophilic 2.) secondarily ornithophilic/ opportunistic 3.) suspected to feed on birds. It also includes information on their respective habitat preferences and virus/vector associations and role.
+
+**All data was collected and processed by myself**. Data collections for 2026 are still ongoing and may be included in this analysis.
 
 ## Questions/Hypotheses to be addressed
-_State the research questions you plan to answer with this analysis._
+
+I have 4 main questions I want to address with this project:
+
+1.  Do chemical blends of bird volatiles increase the abundance and total attraction of mosquitoes captured in traps compared to pentane controls?
+2.  Do chemical blends of bird volatiles increase the abundance and total attraction of ornithophilic mosquitoes captured in traps compared to pentane controls?
+3: How does height affect capture rates when comparing traps placed at midlevel or canopy height?
+
+I hypothesize that chemical blends of bird volatiles will increase the abundance and total attraction of mosquitoes captured in traps compared to pentane controls, and that this effect will be more pronounced for ornithophilic mosquitoes. 
+
+I also hypothesize that traps placed at canopy height (`10ft`) capture more mosquitoes than those placed at midlevel (`5ft`), and that this effect will be more pronounced for ornithophilic mosquitoes.
 
 To cite other work (important everywhere, but likely happens first in introduction), make sure your references are in the BibTeX file specified in the YAML header above and have the right BibTeX key. Then you can include like this:
 
 Examples of reproducible research projects can for instance be found in [@mckay2020; @mckay2020a].
 
-
-
 {{< pagebreak >}}
 
+# Methods
 
-# Methods 
-
-_Describe your methods. That should describe the data, the cleaning processes, and the analysis approaches. You might want to provide a shorter description here and all the details in the supplement._
-
-
-## Schematic of workflow
-
-Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). @fig-schematic is an example of some - completely random/unrelated - schematic that was generated with BioRender.
-We store those figures in the `assets` folder.
-
-```{r}
-#| label: fig-schematic
-#| fig-cap: "A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it's just a random one from one of our projects I found and placed here."
-#| echo: FALSE
-knitr::include_graphics(here("assets","antigen-recognition.png"))
-```
-
-
-
+Methods will appear after analysis. Some methodology is already described in the introduction, as well as in the data description. 
 
 ## Data acquisition
-_As applicable, explain where and how you got the data. If you directly import the data from an online source, you can combine this section with the next._
 
+These data were all collected by myself, with the help of the Peach Lab at the Savannah River Site, as part of a larger project on mosquito surveillance and control as it pertains to avian volatiles and ornithophilic mosquito attraction. The data were collected using either CDC Light Traps and UV-led traps. The data were collected over the last 2 field seasons (2024-2025). The data are stored in the `data` folder, with code in the `code` folder.
 
 ## Data import and cleaning
-_Write code that reads in the file and cleans it so it's ready for analysis. Since this will be fairly long code for most datasets, it might be a good idea to have it in one or several R scripts. If that is the case, explain here briefly what kind of cleaning/processing you do, and provide more details and well documented code somewhere (e.g. as supplement in a paper). All materials, including files that contain code, should be commented well so everyone can follow along._
+
+All raw datasets are stored in `data/raw-data/` and imported using relative paths via the function `here()` to ensure the project renders reproducibly. Import, cleaning, and transformation of data can be found in the markdown file `processing-code.Rmd` in `code/processing-code`, which documents each transformation and saves analysis-ready outputs as `.rds` files in `data/processed-data/`. Across datasets, I standardize variable names and types (e.g., convert date fields to `date`, made `site`/`height` to factors where appropriate), remove artifact columns introduced during CSV export/import (e.g., blank “unnamed” columns or `X` index columns-- which I had not seen before), and resolve duplicate trap headers created by R’s name-repair (e.g., columns ending in `.1`) by collapsing to a single trap identifier and summing counts when needed. 
+
+For trap-pair datasets, I reshape wide species-by-trap tables to long format, parse trap IDs (e.g., `oct3_b_a_2`, `oct3_p_2`, which were the previous identifiers used for date/blend type/replicate/treatment or control) into structured fields (`date_token`, `pair_num`, `arm`, `blend`, `pair_id`), and replace missing count cells with zeros to reflect true absence. I did not remove zeros as they're relevant to my study where I'm assessing attraction and species diversity, so it would be pointless to remove all data where there were no mosquitoes captured or a trap didn't capture every single species we have in our given location...
+ I then generate paired tables with `treatment` and `control` columns and added in derived effect measures (`diff` and log response ratio `logRR`) for downstream exploratory figures and statistical tests. Final cleaned outputs include `species1.rds` (paired species counts for complete blend–pentane pairs) and `identification1.rds` (paired identifications data retaining incomplete pairs for validation and cross-checking). All code is heavily commented and organized into sequential chunks so the full workflow—from import to saved processed products—can be followed and reproduced end-to-end. This section may be updated in the event that I add more data (e.g., weather data) or I encounter issues down the road.
 
 
 ## Statistical analysis
-_Explain anything related to your statistical analyses._
 
+This section will be completed after full analysis. I do not want to make early assumptions about which statistical methods I will be using, as I want to explore the data more fully. However, Positron/R version 4.5.0 and 4.5.2 will be used for all analyses.
 
 {{< pagebreak >}}
-
 
 # Results
 
 ## Exploratory/Descriptive analysis
 
-_Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project._
+It appears that `height` is not a significant factor in mosquito abundance, though there are very few trap nights, so this is not a conclusion I can draw from the data. There is a lot of variability in mosquitoes per trap-night, but it doesn't appear to be significant.
 
+As for blends, `blend_a` appears to be more attractive than `blend_b` when compared to control, and this is especially true for the most abundant species. There are some interesting trends in species abundance between the two blends that I want to explore further with some modeling. Blend A is actually a derivitive of whole-body aeration of a chicken, whereas Blend B is a derivitive of uropygial gland secretions, so it makes sense that Blend A would be more attractive than Blend B, as it captures more of the bird's volatilome. 
 
-@tbl-summarytable shows a summary of the data.
+As for species, Uranotaenia sapphirinia is the most abundant species regardless of blend type, with strong preference for `blend_a` over control when compared to `blend_b` vs control. This is intriguing and I hope to dive more into this species, via literature and this analysis, as we continue.
 
-Note the loading of the data providing a **relative** path using the `../../` notation. (Two dots means a folder up). You never want to specify an **absolute** path like `C:\ahandel\myproject\results\` because if you share this with someone, it won't work for them since they don't have that path. You can also use the `here` R package to create paths. See examples of that below. I generally recommend the `here` package.
-
-```{r}
-#| label: tbl-summarytable
-#| tbl-cap: "Data summary table."
-#| echo: FALSE
-resulttable <- readRDS("../../results/tables/summarytable.rds")
-knitr::kable(resulttable)
-```
-
-
+My next steps will be to look at strictly ornithophilic species and their specific responses, and potentially include environmental factors like weather or habitat descriptions to see if there are any patterns in how they respond.
 
 ## Basic statistical analysis
 
-_To get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any "p<0.05 means statistical significance" interpretation is not valid._
-
-
-@fig-result shows a scatterplot figure produced by one of the R scripts.
-
-```{r}
-#| label: fig-result
-#| fig-cap: "Height and weight stratified by gender."
-#| echo: FALSE
-knitr::include_graphics(here("results","figures","height-weight-stratified.png"))
-```
-
+*To get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any "p\<0.05 means statistical significance" interpretation is not valid.*
 
 ## Full analysis
 
-_Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here._
+*Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.*
 
 Example @tbl-resulttable2 shows a summary of a linear model fit.
 
@@ -165,33 +140,42 @@ resulttable2 <- readRDS(here("results","tables","resulttable2.rds"))
 knitr::kable(resulttable2)
 ```
 
-
 {{< pagebreak >}}
-
 
 # Discussion
 
 ## Summary and Interpretation
-_Summarize what you did, what you found and what it means._
+
+*Summarize what you did, what you found and what it means.*
 
 ## Strengths and Limitations
-_Discuss what you perceive as strengths and limitations of your analysis._
+
+*Discuss what you perceive as strengths and limitations of your analysis.*
 
 ## Conclusions
-_What are the main take-home messages?_
 
-_Include citations in your Qmd file using BibTeX, the list of references will automatically be placed at the end_
+*What are the main take-home messages?*
 
-This paper [@leek2015] discusses types of analyses. 
+*Include citations in your Qmd file using BibTeX, the list of references will automatically be placed at the end*
 
-These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template. 
+This paper [@leek2015] discusses types of analyses.
+
+These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template.
 
 Note that this cited reference will show up at the end of the document, the reference formatting is determined by the CSL file specified in the YAML header. Many more style files for almost any journal [are available](https://www.zotero.org/styles). You also specify the location of your BibTeX reference file in the YAML. You can call your reference file anything you like.
-
 
 {{< pagebreak >}}
 
 # References
-
-
-
+1.	CDC. Global Health [Internet]. 2025 [cited 2026 Feb 20]. Fighting the World’s Deadliest Animal. Available from: https://www.cdc.gov/global-health/impact/fighting-the-worlds-deadliest-animal.html 
+2.	Fagre AC, Soto RA, Magleby R, Cuadera MKQ, Sun A, Cervantes K, et al. Enhancing Eastern Equine Encephalitis Virus Surveillance in New Jersey: Optimized Collection of Culiseta melanura. J Am Mosq Control Assoc. 2024 Jun 1;40(2):92–101. doi:10.2987/23-7148 PubMed PMID: 38587266. 
+3.	West RG, Mathias DR, Day JF, Boohene CK, Unnasch TR, Burkett-Cadena ND. Vectorial Capacity of Culiseta melanura (Diptera: Culicidae) Changes Seasonally and Is Related to Epizootic Transmission of Eastern Equine Encephalitis Virus in Central Florida. Front Ecol Evol. 2020 Aug 21;8. doi:10.3389/fevo.2020.00270 
+4.	Montell C. The sensory arsenal mosquitoes use to find us. Trends Parasitol. 2025 Jul;41(7):591–602. doi:10.1016/j.pt.2025.05.004 PubMed PMID: 40447468; PubMed Central PMCID: PMC12352024. 
+5.	Spanoudis CG, Wondwosen B, Isberg E, Andreadis SS, Kline DL, Birgersson G, et al. The chemical code for attracting Culex mosquitoes. Front Ecol Evol. 2022 Aug 11;10. doi:10.3389/fevo.2022.930665 
+6.	Allan SA, Bernier UR, Kline DL. Laboratory Evaluation of Avian Odors for Mosquito (Diptera: Culicidae) Attraction. J Med Entomol. 2006 Mar 1;43(2):225–31. doi:10.1093/jmedent/43.2.225 
+7.	Darbro JM, Harrington LC. Bird-Baited Traps for Surveillance of West Nile Mosquito Vectors: Effect of Bird Species, Trap Height, and Mosquito Escape Rates. 
+8.	McIntire S, Esposito M, Badger J. Sentinel Chickens and Their Role in Mosquito-Borne Virus Surveillance in Delaware. Del J Public Health. 2021 Jan 21;7(1):72–4. doi:10.32481/djph.2021.01.014 PubMed PMID: 34467184; PubMed Central PMCID: PMC8352551. 
+9.	Verhulst NO, Díez-Fernández A. 5. Effect of host preferences of mosquitoes on disease transmission between wildlife and humans. In. Brill; 2022 [cited 2025 Jan 20]. Available from: https://brill.com/edcollchap-oa/book/9789086869312/BP000009.xml doi:10.3920/978-90-8686-931-2_5 
+10.	Burkett-Cadena ND. Patterns of host use in mosquitoes: Implications for virus transmission [Ph.D.] [Internet]. [United States -- Alabama]: Auburn University; 2010 [cited 2025 Jan 20]. Available from: https://www.proquest.com/docview/741550667/abstract/415C3337BB1849BDPQ/1 
+11.	UVA-LED Light Trap (Model 1612) — John W. Hock Company [Internet]. [cited 2026 Feb 20]. Available from: https://www.johnwhock.com/products/mosquito-sandfly-traps/uva-led-light-trap/ 
+12.	Burkett-Cadena ND. Mosquitoes of the southeastern United States. Tuscaloosa, Ala: University of Alabama Press; 2013. 188 p. 

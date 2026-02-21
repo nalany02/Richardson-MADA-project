@@ -1,0 +1,323 @@
+###############################
+# Processing script
+This script contains the code necessary to process and clean the raw data sets and prepare them for exploratory data analysis and modeling.
+
+## Load packages
+```{r}
+# load necessary packages. if not installed, just install them first with install.packages("package-name")
+library(dplyr) #for data processing/cleaning
+library(tidyr) #for data processing/cleaning
+library(skimr) #for nice visualization of data 
+library(here) #to set paths
+```
+
+
+## Load data
+```{r}
+#path to data
+#note the use of the here() package and not absolute paths
+data_location1 <- here::here("data","raw-data","blend-data.csv")
+data_location2 <- here::here("data","raw-data","height-data.csv")
+data_location3 <- here::here("data","raw-data","identifications-data.csv")
+data_location4 <- here::here("data","raw-data","ornithophilicity-text.csv")
+data_location5 <- here::here("data","raw-data","species-pair-count.csv")
+
+#load data. 
+rawdata1 <- read.csv(data_location1)
+rawdata2 <- read.csv(data_location2)
+rawdata3 <- read.csv(data_location3)
+rawdata4 <- read.csv(data_location4)
+rawdata5 <- read.csv(data_location5)
+```
+
+## Explore data
+```{r}
+#take a look at the data
+str(rawdata1)
+summary(rawdata1)
+str(rawdata2)
+summary(rawdata2)
+str(rawdata3)
+summary(rawdata3)
+summary(rawdata4)
+summary(rawdata5)
+# we have a lot of work ahead of us! there are lots of NA values, which cannot be removed as they are important for the analysis, but we'll have to clean them up and fix pairing later.
+```
+
+## Clean data 1. blend-data
+```{r}
+# cleaning up rawdata1 a.k.a. blend-data
+# replicates aren't important at this step so we can remove the `rep` column
+# we also want to make sure that the `date` column is in date format, not character
+# and we want to make sure that the `site` column is a factor/categorical variable
+library(dplyr)
+
+blend1 <- rawdata1 %>%
+  select(-Rep) %>%
+  mutate(
+    Date = as.Date(Date, format = "%d-%b-%y"),
+    Site = as.factor(Site)
+  )
+```
+```{r}
+# i also need to rename the % responders in treatment column to something easier to work with, so ill do change it to responders_treatment
+# and make all column header names lowercase
+blend1 <- blend1 %>% rename(responders_treatment = `X..responders.in.treatment`) %>%
+  rename_all(tolower)
+```
+```{r}
+# need to make responders_treatment numeric instead of character
+blend1 <- blend1 %>% mutate(responders_treatment = as.numeric(responders_treatment))
+
+# we also want to make sure that the `blend` column is a factor/categorical variable
+blend1 <- blend1 %>% mutate(blend = as.factor(blend))
+
+# for any rows where `treatment` or `control` is NA, we want to make sure that `responders_treatment` we need to remove those rows, since the data is paired.
+blend1 <- blend1 %>% filter( !(is.na(treatment) | is.na(control)) )
+summary(blend1)
+
+```
+
+```{r}
+# now we can save the cleaned blend data in the processed-data folder
+save_data_location1 <- here("data", "processed-data", "blend1.rds")
+saveRDS(blend1, file = save_data_location1)
+```
+
+# Clean data 2. height-data
+```{r}
+# cleaning up rawdata2 a.k.a. height-data
+# need to convert date to date format, and make height a factor variable
+library(dplyr)
+
+height1 <- rawdata2 %>%
+  select(-date_ID, -X, -X.1) %>%
+  rename(date = date_trapped) %>%
+  mutate(
+    date = as.Date(date, format = "%m/%d/%y"),
+    height = as.factor(height)
+  )
+str(height1)
+```
+
+```{r}
+# now we can save the cleaned blend data in the processed-data folder
+save_data_location2 <- here("data", "processed-data", "height1.rds")
+saveRDS(height1, file = save_data_location2)
+```
+
+# Clean data 3. species-pair-count data (raw data 5)
+```{r}
+# this section was done with chatgpt 5.2 thinking.
+library(tidyr)
+library(stringr)
+library(tidyselect)
+library(tibble)
+
+# Read species-pair-count (Species becomes rownames because row.names=1)
+rawdata5 <- read.csv(
+  here::here("data", "raw-data", "species-pair-count.csv"),
+  row.names = 1,
+  check.names = FALSE
+)
+
+# Fix empty column names ("" -> unnamed_*)
+nm <- names(rawdata5)
+empty_idx <- which(is.na(nm) | nm == "")
+if (length(empty_idx) > 0) {
+  nm[empty_idx] <- paste0("unnamed_", empty_idx)
+  names(rawdata5) <- nm
+}
+
+# Drop empty export columns
+rawdata5 <- rawdata5 %>%
+  dplyr::select(-tidyselect::starts_with("unnamed_"))
+
+# Bring rownames (species) back as a real column
+rawdata5_fixed <- rawdata5 %>%
+  tibble::rownames_to_column(var = "species")
+
+# Build long format
+species_long <- rawdata5_fixed %>%
+  tidyr::pivot_longer(
+    cols = -species,
+    names_to = "trap_id",
+    values_to = "count"
+  ) %>%
+  dplyr::mutate(
+    date_token = stringr::str_extract(trap_id, "^[a-z]+\\d+"),
+    pair_num   = as.integer(stringr::str_extract(trap_id, "(?<=_)\\d+$")),
+    arm        = dplyr::if_else(stringr::str_detect(trap_id, "_p_"), "control", "treatment"),
+    blend      = dplyr::case_when(
+      stringr::str_detect(trap_id, "_b_a_") ~ "blend_a",
+      stringr::str_detect(trap_id, "_b_b_") ~ "blend_b",
+      TRUE ~ NA_character_
+    ),
+    pair_id    = paste(date_token, pair_num, sep = "_"),
+    count      = tidyr::replace_na(count, 0)
+  )
+
+names(species_long)
+```
+
+```{r}
+species_long %>% # check if there are any traps with missing date_token or pair_num, which would indicate a problem with the trap_id parsing
+  dplyr::filter(is.na(date_token) | is.na(pair_num)) %>%
+  dplyr::distinct(trap_id)
+# looks good
+```
+
+```{r}
+# 2) sanity check: each pair_id should have 1 treatment + 1 control trap
+pair_check <- species_long %>%
+  dplyr::distinct(pair_id, arm, trap_id) %>%
+  dplyr::count(pair_id, arm) %>%
+  tidyr::pivot_wider(names_from = arm, values_from = n, values_fill = 0)
+
+pair_check %>% dplyr::filter(treatment != 1 | control != 1)
+```
+```{r}
+# replace NA counts with 0
+species_long <- species_long %>%
+  dplyr::mutate(count = tidyr::replace_na(count, 0))
+# confirm NAs are gone
+species_long %>%
+  dplyr::summarise(n_missing_count = sum(is.na(count)))
+```
+
+```{r}
+bad_pairs <- pair_check %>%
+  dplyr::filter(control != 1 | treatment != 1) %>%
+  dplyr::pull(pair_id)
+
+species_long_complete <- species_long %>%
+  dplyr::filter(!pair_id %in% bad_pairs)
+
+species_long_complete %>%
+  dplyr::distinct(pair_id, arm, trap_id) %>%
+  dplyr::count(pair_id, arm) %>%
+  tidyr::pivot_wider(names_from = arm, values_from = n, values_fill = 0) %>%
+  dplyr::filter(treatment != 1 | control != 1)
+
+dropped_pairs <- species_long %>%
+  dplyr::filter(pair_id %in% bad_pairs) %>%
+  dplyr::distinct(pair_id, arm, trap_id)
+
+dropped_pairs
+```
+
+```{r}
+# now we can build up species1 using the cleaned and processed species_long_complete data
+species1 <- species_long %>%
+  dplyr::group_by(species, pair_id) %>%
+  dplyr::mutate(blend = dplyr::first(stats::na.omit(blend))) %>%  # carry blend onto control row
+  dplyr::ungroup() %>%
+  dplyr::select(species, date_token, pair_num, pair_id, blend, arm, count) %>%  # <-- drops trap_id
+  tidyr::pivot_wider(
+    id_cols = c(species, date_token, pair_num, pair_id, blend),
+    names_from = arm,
+    values_from = count,
+    values_fill = 0
+  ) %>%
+  dplyr::mutate(
+    diff  = treatment - control,
+    logRR = log((treatment + 0.5) / (control + 0.5))
+  )
+dplyr::glimpse(species1)
+```
+
+```{r}
+# check all totals for species and pair_id combinations are correct. total of treatment + control should match sum counts across arms in species long
+long_totals <- species_long %>%
+  dplyr::group_by(species, pair_id) %>%
+  dplyr::summarise(total_long = sum(count), .groups = "drop")
+
+wide_totals <- species1 %>%
+  dplyr::mutate(total_wide = treatment + control) %>%
+  dplyr::select(species, pair_id, total_wide)
+
+check_totals <- dplyr::left_join(long_totals, wide_totals, by = c("species", "pair_id")) %>%
+  dplyr::mutate(match = total_long == total_wide)
+
+check_totals %>% dplyr::filter(!match)
+# i consider this done now, lets just double check names and whatnot
+names(species1)
+str(species1)
+head(species1)
+```
+
+```{r}
+# save the cleaned species data in the processed-data folder
+save_data_location5 <- here("data", "processed-data", "species1.rds")
+saveRDS(species1, file = save_data_location5)
+```
+
+# Clean data 4. identifications-data (rawdata3)
+
+```{r}
+# cleaning up rawdata3 a.k.a. identifications-data
+# need to pivot longer to get species in one column and counts in another, and then extract date, pair_num, arm, blend info from the trap_id column
+identification_long <- rawdata3 %>%
+  dplyr::select(-X) %>%                        # drop junk column
+  dplyr::rename(species = Species) %>%         # standardize name
+  tidyr::pivot_longer(
+    cols = -species,
+    names_to = "trap_id",
+    values_to = "count"
+  ) %>%
+  dplyr::mutate(
+    trap_id    = stringr::str_replace(trap_id, "\\.\\d+$", ""),  # collapse .1 duplicates
+    date_token = stringr::str_extract(trap_id, "^[a-z]+\\d+"),
+    pair_num   = as.integer(stringr::str_extract(trap_id, "(?<=_)\\d+$")),
+    arm        = dplyr::if_else(stringr::str_detect(trap_id, "_p_"), "control", "treatment"),
+    blend      = dplyr::case_when(
+      stringr::str_detect(trap_id, "_b_a_") ~ "blend_a",
+      stringr::str_detect(trap_id, "_b_b_") ~ "blend_b",
+      TRUE ~ NA_character_
+    ),
+    pair_id    = paste(date_token, pair_num, sep = "_"),
+    count      = tidyr::replace_na(count, 0)
+  )
+names(identification_long)
+```
+
+```{r}
+#build `identification1` (paired wide; sums duplicates; keeps incomplete pairs)
+identification1 <- identification_long %>%
+  dplyr::group_by(species, pair_id) %>%
+  dplyr::mutate(
+    blend_pair = dplyr::first(stats::na.omit(blend)),
+    date_token = dplyr::first(date_token),
+    pair_num   = dplyr::first(pair_num)
+  ) %>%
+  dplyr::ungroup() %>%
+  dplyr::group_by(species, date_token, pair_num, pair_id, blend_pair, arm) %>%
+  dplyr::summarise(count = sum(count, na.rm = TRUE), .groups = "drop") %>%
+  tidyr::pivot_wider(
+    id_cols = c(species, date_token, pair_num, pair_id, blend_pair),
+    names_from = arm,
+    values_from = count,
+    values_fill = 0
+  ) %>%
+  dplyr::rename(blend = blend_pair) %>%
+  dplyr::mutate(
+    diff  = treatment - control,
+    logRR = log((treatment + 0.5) / (control + 0.5))
+  )
+
+# should now be unique per species x pair_id
+identification1 %>%
+  dplyr::count(species, pair_id) %>%
+  dplyr::filter(n > 1)
+```
+
+```{r}
+# save the cleaned species data in the processed-data folder
+save_data_location3 <- here("data", "processed-data", "identification1.rds")
+saveRDS(identification1, file = save_data_location3)
+```
+
+Now all cleaned data can be found in the processed-data folder as RDS files. We can load those into our exploratory data analysis and modeling scripts to do the rest of the work.
+
+To note, I did not 'clean' the ornithophilicity-text data since it's already pretty clean and ready to use as is for simple descriptions, but can be adjusted later if needed.
+

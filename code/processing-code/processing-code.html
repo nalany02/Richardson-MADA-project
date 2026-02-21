@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>processing-code</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="processing-code_files/libs/clipboard/clipboard.min.js"></script>
+<script src="processing-code_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="processing-code_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="processing-code_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="processing-code_files/libs/quarto-html/popper.min.js"></script>
+<script src="processing-code_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="processing-code_files/libs/quarto-html/anchor.min.js"></script>
+<link href="processing-code_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="processing-code_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="processing-code_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="processing-code_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="processing-code_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="section" class="level31">
+<p class="heading"></p>
+</section>
+<section id="processing-script" class="level1">
+<h1>Processing script</h1>
+<p>This script contains the code necessary to process and clean the raw data sets and prepare them for exploratory data analysis and modeling.</p>
+<section id="load-packages" class="level2">
+<h2 class="anchored" data-anchor-id="load-packages">Load packages</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load necessary packages. if not installed, just install them first with install.packages("package-name")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#for data processing/cleaning</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr) <span class="co">#for data processing/cleaning</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr) <span class="co">#for nice visualization of data </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'skimr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here) <span class="co">#to set paths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/nalanyrichardson/Downloads/MADA/Richardson-MADA-project</code></pre>
+</div>
+</div>
+</section>
+<section id="load-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-data">Load data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#path to data</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#note the use of the here() package and not absolute paths</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>data_location1 <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw-data"</span>,<span class="st">"blend-data.csv"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>data_location2 <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw-data"</span>,<span class="st">"height-data.csv"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>data_location3 <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw-data"</span>,<span class="st">"identifications-data.csv"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>data_location4 <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw-data"</span>,<span class="st">"ornithophilicity-text.csv"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>data_location5 <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw-data"</span>,<span class="st">"species-pair-count.csv"</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#load data. </span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>rawdata1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(data_location1)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>rawdata2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(data_location2)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>rawdata3 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(data_location3)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>rawdata4 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(data_location4)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>rawdata5 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(data_location5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="explore-data" class="level2">
+<h2 class="anchored" data-anchor-id="explore-data">Explore data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#take a look at the data</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rawdata1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   43 obs. of  10 variables:
+ $ Date                      : chr  "7-Sep-25" "7-Sep-25" "7-Sep-25" "9-Sep-25" ...
+ $ Site                      : chr  "RBNR" "RBNR" "RBNR" "RBNR" ...
+ $ Blend                     : chr  "blend_b" "blend_b" "blend_b" "blend_b" ...
+ $ Treatment                 : int  192 204 111 55 43 68 200 149 43 34 ...
+ $ Control                   : int  21 193 73 37 33 53 3 173 40 28 ...
+ $ Rep                       : logi  NA NA NA NA NA NA ...
+ $ Trap                      : chr  "uvled" "uvled" "uvled" "uvled" ...
+ $ Height                    : chr  "midlevel" "midlevel" "midlevel" "midlevel" ...
+ $ X..responders.in.treatment: chr  "90.14084507" "51.38539043" "60.32608696" "59.7826087" ...
+ $ total                     : int  21 193 73 37 33 53 3 173 40 28 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rawdata1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Date               Site              Blend             Treatment     
+ Length:43          Length:43          Length:43          Min.   : 13.00  
+ Class :character   Class :character   Class :character   1st Qu.: 33.00  
+ Mode  :character   Mode  :character   Mode  :character   Median : 43.00  
+                                                          Mean   : 74.83  
+                                                          3rd Qu.:105.50  
+                                                          Max.   :204.00  
+                                                          NA's   :20      
+    Control         Rep              Trap              Height         
+ Min.   :  3.00   Mode:logical   Length:43          Length:43         
+ 1st Qu.: 16.75   NA's:43        Class :character   Class :character  
+ Median : 25.00                  Mode  :character   Mode  :character  
+ Mean   : 46.08                                                       
+ 3rd Qu.: 57.75                                                       
+ Max.   :193.00                                                       
+ NA's   :19                                                           
+ X..responders.in.treatment     total        
+ Length:43                  Min.   :   0.00  
+ Class :character           1st Qu.:  14.00  
+ Mode  :character           Median :  22.00  
+                            Mean   :  80.59  
+                            3rd Qu.:  59.50  
+                            Max.   :1088.00  
+                            NA's   :16       </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rawdata2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   280 obs. of  10 variables:
+ $ date_trapped: chr  "6/17/25" "6/17/25" "6/17/25" "6/17/25" ...
+ $ genus       : chr  "Anopheles" "Anopheles" "Anopheles" "Anopheles" ...
+ $ species     : chr  "An. crucians complex" "An. crucians complex" "An. crucians complex" "An. crucians complex" ...
+ $ sex         : chr  "F" "F" "F" "F" ...
+ $ trap_type   : chr  "cdc_light" "cdc_light" "cdc_light" "cdc_light" ...
+ $ height      : chr  "midlevel" "midlevel" "midlevel" "midlevel" ...
+ $ location    : chr  "FLB" "FLB" "FLB" "FLB" ...
+ $ date_ID     : chr  "6/20/25" "6/20/25" "6/20/25" "6/20/25" ...
+ $ X           : logi  NA NA NA NA NA NA ...
+ $ X.1         : chr  "" "" "" "" ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rawdata2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> date_trapped          genus             species              sex           
+ Length:280         Length:280         Length:280         Length:280        
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+  trap_type            height            location           date_ID         
+ Length:280         Length:280         Length:280         Length:280        
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+    X               X.1           
+ Mode:logical   Length:280        
+ NA's:280       Class :character  
+                Mode  :character  </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rawdata3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   26 obs. of  26 variables:
+ $ Species       : chr  "Ae_atlanticustor" "Ae_hendersoni" "Ae_cinereus" "Ae. triseriatus" ...
+ $ oct3_b_a_2    : int  3 NA NA NA 3 NA NA NA 1 1 ...
+ $ oct3_p_2      : int  3 NA NA NA NA NA 1 2 NA NA ...
+ $ oct1_b_a_3    : int  8 NA NA NA 1 NA 1 NA 2 3 ...
+ $ oct1_p_3      : int  NA NA NA NA NA NA NA NA NA 3 ...
+ $ oct3_b_a_1    : int  6 NA NA NA 6 NA 3 1 2 NA ...
+ $ oct3_p_1      : int  3 NA NA NA NA NA NA 3 1 2 ...
+ $ oct7_b_a_2    : int  NA NA NA 1 1 NA NA 1 NA 1 ...
+ $ oct7_p_2      : int  1 NA NA NA NA NA 1 1 1 1 ...
+ $ oct1_b_a_1    : int  2 NA 0 NA NA 0 3 8 NA NA ...
+ $ oct1_p_1      : int  0 NA 1 NA NA 0 4 1 NA 2 ...
+ $ sept24_b_b_2  : int  3 1 NA NA 2 NA 15 1 1 1 ...
+ $ sept24_p_2    : int  1 NA NA NA NA NA NA 1 NA 1 ...
+ $ sept10_b_b_1  : int  14 NA 3 NA 2 NA 1 2 NA 4 ...
+ $ sept10_p_1    : int  8 NA NA NA 1 NA 5 NA 1 NA ...
+ $ oct1_b_a_2    : int  5 NA NA NA NA NA 2 1 1 1 ...
+ $ oct1_p_2      : int  2 NA 1 NA NA NA NA 3 NA 1 ...
+ $ sept19_p_1    : int  22 6 NA NA 3 1 2 NA 5 5 ...
+ $ sept10_b_b_1.1: int  14 NA 3 NA 2 NA 1 2 NA 4 ...
+ $ X             : logi  NA NA NA NA NA NA ...
+ $ sept19_p_3    : int  2 NA NA NA 2 1 6 4 1 1 ...
+ $ oct2_b_a_2    : int  6 NA NA NA 3 NA 1 1 1 6 ...
+ $ oct3_b_a_3    : int  2 NA 1 NA 2 NA 6 6 1 2 ...
+ $ sept9_b_b_1   : int  3 NA 3 NA NA 1 NA 4 5 1 ...
+ $ sept10_p_1.1  : int  8 NA NA NA 1 NA 5 NA 1 NA ...
+ $ sept24_p_3    : int  NA NA NA NA NA NA NA NA NA 1 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rawdata3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Species            oct3_b_a_2       oct3_p_2     oct1_b_a_3       oct1_p_3  
+ Length:26          Min.   :1.000   Min.   :1.0   Min.   :1.000   Min.   :1.0  
+ Class :character   1st Qu.:1.000   1st Qu.:1.0   1st Qu.:1.000   1st Qu.:2.0  
+ Mode  :character   Median :2.000   Median :2.0   Median :1.000   Median :2.0  
+                    Mean   :2.444   Mean   :1.8   Mean   :2.727   Mean   :2.6  
+                    3rd Qu.:3.000   3rd Qu.:2.0   3rd Qu.:3.500   3rd Qu.:3.0  
+                    Max.   :6.000   Max.   :3.0   Max.   :8.000   Max.   :5.0  
+                    NA's   :17      NA's   :21    NA's   :15      NA's   :21   
+   oct3_b_a_1     oct3_p_1       oct7_b_a_2        oct7_p_2    oct1_b_a_1    
+ Min.   :1.0   Min.   :1.000   Min.   : 1.000   Min.   : 1   Min.   : 0.000  
+ 1st Qu.:1.5   1st Qu.:1.000   1st Qu.: 1.000   1st Qu.: 1   1st Qu.: 0.750  
+ Median :2.0   Median :1.500   Median : 1.000   Median : 1   Median : 1.500  
+ Mean   :3.0   Mean   :1.833   Mean   : 4.125   Mean   : 2   Mean   : 3.875  
+ 3rd Qu.:4.5   3rd Qu.:2.750   3rd Qu.: 3.000   3rd Qu.: 1   3rd Qu.: 4.250  
+ Max.   :6.0   Max.   :3.000   Max.   :20.000   Max.   :10   Max.   :16.000  
+ NA's   :19    NA's   :20      NA's   :18       NA's   :17   NA's   :18      
+    oct1_p_1      sept24_b_b_2     sept24_p_2     sept10_b_b_1  
+ Min.   :0.000   Min.   : 1.00   Min.   :1.000   Min.   : 1.00  
+ 1st Qu.:0.250   1st Qu.: 1.00   1st Qu.:1.000   1st Qu.: 1.00  
+ Median :1.000   Median : 1.00   Median :1.000   Median : 2.00  
+ Mean   :1.333   Mean   : 2.90   Mean   :1.875   Mean   : 4.10  
+ 3rd Qu.:1.750   3rd Qu.: 2.75   3rd Qu.:1.250   3rd Qu.: 3.75  
+ Max.   :4.000   Max.   :15.00   Max.   :7.000   Max.   :14.00  
+ NA's   :20      NA's   :16      NA's   :18      NA's   :16     
+   sept10_p_1      oct1_b_a_2        oct1_p_2       sept19_p_1   
+ Min.   :1.000   Min.   : 1.000   Min.   :1.000   Min.   : 1.00  
+ 1st Qu.:1.000   1st Qu.: 1.000   1st Qu.:1.000   1st Qu.: 2.75  
+ Median :1.500   Median : 1.000   Median :1.000   Median : 4.50  
+ Mean   :3.125   Mean   : 3.333   Mean   :1.857   Mean   : 6.25  
+ 3rd Qu.:5.250   3rd Qu.: 2.000   3rd Qu.:2.500   3rd Qu.: 5.25  
+ Max.   :8.000   Max.   :16.000   Max.   :4.000   Max.   :22.00  
+ NA's   :18      NA's   :17       NA's   :19      NA's   :14     
+ sept10_b_b_1.1     X             sept19_p_3       oct2_b_a_2   
+ Min.   : 1.00   Mode:logical   Min.   : 1.000   Min.   :1.000  
+ 1st Qu.: 1.00   NA's:26        1st Qu.: 1.000   1st Qu.:1.000  
+ Median : 2.00                  Median : 2.000   Median :1.000  
+ Mean   : 4.10                  Mean   : 3.111   Mean   :2.364  
+ 3rd Qu.: 3.75                  3rd Qu.: 4.000   3rd Qu.:3.500  
+ Max.   :14.00                  Max.   :10.000   Max.   :6.000  
+ NA's   :16                     NA's   :17       NA's   :15     
+   oct3_b_a_3      sept9_b_b_1     sept10_p_1.1     sept24_p_3
+ Min.   : 1.000   Min.   :1.000   Min.   :1.000   Min.   :1   
+ 1st Qu.: 1.750   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1   
+ Median : 2.000   Median :3.000   Median :1.500   Median :1   
+ Mean   : 4.667   Mean   :2.667   Mean   :3.125   Mean   :1   
+ 3rd Qu.: 4.500   3rd Qu.:4.000   3rd Qu.:5.250   3rd Qu.:1   
+ Max.   :27.000   Max.   :5.000   Max.   :8.000   Max.   :1   
+ NA's   :14       NA's   :17      NA's   :18      NA's   :21  </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rawdata4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Species          Bird.Feeding.Preference   Habitat         
+ Length:25          Length:25               Length:25         
+ Class :character   Class :character        Class :character  
+ Mode  :character   Mode  :character        Mode  :character  
+ Virus.Association...Vector.Role
+ Length:25                      
+ Class :character               
+ Mode  :character               </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rawdata5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Species            oct3_b_a_2       oct3_p_2     oct1_b_a_3       oct1_p_3  
+ Length:27          Min.   :1.000   Min.   :1.0   Min.   :1.000   Min.   :1.0  
+ Class :character   1st Qu.:1.000   1st Qu.:1.0   1st Qu.:1.000   1st Qu.:2.0  
+ Mode  :character   Median :2.000   Median :2.0   Median :1.000   Median :2.0  
+                    Mean   :2.444   Mean   :1.8   Mean   :2.727   Mean   :2.6  
+                    3rd Qu.:3.000   3rd Qu.:2.0   3rd Qu.:3.500   3rd Qu.:3.0  
+                    Max.   :6.000   Max.   :3.0   Max.   :8.000   Max.   :5.0  
+                    NA's   :18      NA's   :22    NA's   :16      NA's   :22   
+   oct3_b_a_1     oct3_p_1       oct7_b_a_2        oct7_p_2    oct1_b_a_1    
+ Min.   :1.0   Min.   :1.000   Min.   : 1.000   Min.   : 1   Min.   : 0.000  
+ 1st Qu.:1.5   1st Qu.:1.000   1st Qu.: 1.000   1st Qu.: 1   1st Qu.: 0.750  
+ Median :2.0   Median :1.500   Median : 1.000   Median : 1   Median : 1.500  
+ Mean   :3.0   Mean   :1.833   Mean   : 4.125   Mean   : 2   Mean   : 3.875  
+ 3rd Qu.:4.5   3rd Qu.:2.750   3rd Qu.: 3.000   3rd Qu.: 1   3rd Qu.: 4.250  
+ Max.   :6.0   Max.   :3.000   Max.   :20.000   Max.   :10   Max.   :16.000  
+ NA's   :20    NA's   :21      NA's   :19       NA's   :18   NA's   :19      
+    oct1_p_1      sept24_b_b_2     sept24_p_2     sept10_b_b_1  
+ Min.   :0.000   Min.   : 1.00   Min.   :1.000   Min.   : 1.00  
+ 1st Qu.:0.250   1st Qu.: 1.00   1st Qu.:1.000   1st Qu.: 1.00  
+ Median :1.000   Median : 1.00   Median :1.000   Median : 2.00  
+ Mean   :1.333   Mean   : 2.90   Mean   :1.875   Mean   : 4.10  
+ 3rd Qu.:1.750   3rd Qu.: 2.75   3rd Qu.:1.250   3rd Qu.: 3.75  
+ Max.   :4.000   Max.   :15.00   Max.   :7.000   Max.   :14.00  
+ NA's   :21      NA's   :17      NA's   :19      NA's   :17     
+   sept10_p_1      oct1_b_a_2        oct1_p_2        X             X.1         
+ Min.   :1.000   Min.   : 1.000   Min.   :1.000   Mode:logical   Mode:logical  
+ 1st Qu.:1.000   1st Qu.: 1.000   1st Qu.:1.000   NA's:27        NA's:27       
+ Median :1.500   Median : 1.000   Median :1.000                                
+ Mean   :3.125   Mean   : 3.333   Mean   :1.857                                
+ 3rd Qu.:5.250   3rd Qu.: 2.000   3rd Qu.:2.500                                
+ Max.   :8.000   Max.   :16.000   Max.   :4.000                                
+ NA's   :19      NA's   :18       NA's   :20                                   
+   X.2            X.3            X.4            X.5            X.6         
+ Mode:logical   Mode:logical   Mode:logical   Mode:logical   Mode:logical  
+ NA's:27        NA's:27        NA's:27        NA's:27        NA's:27       
+                                                                           
+                                                                           
+                                                                           
+                                                                           
+                                                                           
+   X.7            X.8            X.9            X.10           X.11        
+ Mode:logical   Mode:logical   Mode:logical   Mode:logical   Mode:logical  
+ NA's:27        NA's:27        NA's:27        NA's:27        NA's:27       
+                                                                           
+                                                                           
+                                                                           
+                                                                           
+                                                                           
+   X.12           X.13           X.14           X.15           X.16        
+ Mode:logical   Mode:logical   Mode:logical   Mode:logical   Mode:logical  
+ NA's:27        NA's:27        NA's:27        NA's:27        NA's:27       
+                                                                           
+                                                                           
+                                                                           
+                                                                           
+                                                                           
+   X.17           X.18           X.19        
+ Mode:logical   Mode:logical   Mode:logical  
+ NA's:27        NA's:27        NA's:27       
+                                             
+                                             
+                                             
+                                             
+                                             </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we have a lot of work ahead of us! there are lots of NA values, which cannot be removed as they are important for the analysis, but we'll have to clean them up and fix pairing later.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="clean-data-1.-blend-data" class="level2">
+<h2 class="anchored" data-anchor-id="clean-data-1.-blend-data">Clean data 1. blend-data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cleaning up rawdata1 a.k.a. blend-data</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># replicates aren't important at this step so we can remove the `rep` column</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># we also want to make sure that the `date` column is in date format, not character</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and we want to make sure that the `site` column is a factor/categorical variable</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>blend1 <span class="ot">&lt;-</span> rawdata1 <span class="sc">%&gt;%</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Rep) <span class="sc">%&gt;%</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Date =</span> <span class="fu">as.Date</span>(Date, <span class="at">format =</span> <span class="st">"%d-%b-%y"</span>),</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Site =</span> <span class="fu">as.factor</span>(Site)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># i also need to rename the % responders in treatment column to something easier to work with, so ill do change it to responders_treatment</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># and make all column header names lowercase</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>blend1 <span class="ot">&lt;-</span> blend1 <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">responders_treatment =</span> <span class="st">`</span><span class="at">X..responders.in.treatment</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_all</span>(tolower)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># need to make responders_treatment numeric instead of character</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>blend1 <span class="ot">&lt;-</span> blend1 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">responders_treatment =</span> <span class="fu">as.numeric</span>(responders_treatment))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `mutate()`.
+ℹ In argument: `responders_treatment = as.numeric(responders_treatment)`.
+Caused by warning:
+! NAs introduced by coercion</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we also want to make sure that the `blend` column is a factor/categorical variable</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>blend1 <span class="ot">&lt;-</span> blend1 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">blend =</span> <span class="fu">as.factor</span>(blend))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># for any rows where `treatment` or `control` is NA, we want to make sure that `responders_treatment` we need to remove those rows, since the data is paired.</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>blend1 <span class="ot">&lt;-</span> blend1 <span class="sc">%&gt;%</span> <span class="fu">filter</span>( <span class="sc">!</span>(<span class="fu">is.na</span>(treatment) <span class="sc">|</span> <span class="fu">is.na</span>(control)) )</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(blend1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      date              site        blend      treatment        control      
+ Min.   :2025-09-07       : 0          : 0   Min.   : 21.0   Min.   :  3.00  
+ 1st Qu.:2025-09-11   RBNR:21   blend_a: 8   1st Qu.: 34.0   1st Qu.: 17.00  
+ Median :2025-09-19             blend_b:13   Median : 43.0   Median : 28.00  
+ Mean   :2025-09-21                          Mean   : 80.1   Mean   : 48.24  
+ 3rd Qu.:2025-10-01                          3rd Qu.:111.0   3rd Qu.: 63.00  
+ Max.   :2025-10-07                          Max.   :204.0   Max.   :193.00  
+     trap              height          responders_treatment     total        
+ Length:21          Length:21          Min.   :46.27        Min.   :   3.00  
+ Class :character   Class :character   1st Qu.:56.20        1st Qu.:  17.00  
+ Mode  :character   Mode  :character   Median :61.35        Median :  33.00  
+                                       Mean   :64.04        Mean   :  99.19  
+                                       3rd Qu.:68.52        3rd Qu.:  73.00  
+                                       Max.   :98.52        Max.   :1088.00  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now we can save the cleaned blend data in the processed-data folder</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>save_data_location1 <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed-data"</span>, <span class="st">"blend1.rds"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(blend1, <span class="at">file =</span> save_data_location1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="clean-data-2.-height-data" class="level1">
+<h1>Clean data 2. height-data</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cleaning up rawdata2 a.k.a. height-data</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># need to convert date to date format, and make height a factor variable</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>height1 <span class="ot">&lt;-</span> rawdata2 <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>date_ID, <span class="sc">-</span>X, <span class="sc">-</span>X<span class="fl">.1</span>) <span class="sc">%&gt;%</span> <span class="co"># removed empty columns and date_ID since it's not needed for the analysis</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">date =</span> date_trapped) <span class="sc">%&gt;%</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(date, <span class="at">format =</span> <span class="st">"%d-%b-%y"</span>),</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> <span class="fu">as.factor</span>(height)</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(height1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   280 obs. of  7 variables:
+ $ date     : Date, format: NA NA ...
+ $ genus    : chr  "Anopheles" "Anopheles" "Anopheles" "Anopheles" ...
+ $ species  : chr  "An. crucians complex" "An. crucians complex" "An. crucians complex" "An. crucians complex" ...
+ $ sex      : chr  "F" "F" "F" "F" ...
+ $ trap_type: chr  "cdc_light" "cdc_light" "cdc_light" "cdc_light" ...
+ $ height   : Factor w/ 3 levels "","10ft","midlevel": 3 3 3 3 3 3 3 3 3 3 ...
+ $ location : chr  "FLB" "FLB" "FLB" "FLB" ...</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now we can save the cleaned blend data in the processed-data folder</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>save_data_location2 <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed-data"</span>, <span class="st">"height1.rds"</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(height1, <span class="at">file =</span> save_data_location2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="clean-data-3.-species-pair-count-data-raw-data-5" class="level1">
+<h1>Clean data 3. species-pair-count data (raw data 5)</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this section was done with chatgpt 5.2 thinking.</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyselect)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tibble' was built under R version 4.5.2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read species-pair-count (Species becomes rownames because row.names=1)</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>rawdata5 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"raw-data"</span>, <span class="st">"species-pair-count.csv"</span>),</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="dv">1</span>,</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Fix empty column names ("" -&gt; unnamed_*)</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>nm <span class="ot">&lt;-</span> <span class="fu">names</span>(rawdata5)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>empty_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(nm) <span class="sc">|</span> nm <span class="sc">==</span> <span class="st">""</span>)</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(empty_idx) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  nm[empty_idx] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"unnamed_"</span>, empty_idx)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(rawdata5) <span class="ot">&lt;-</span> nm</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop empty export columns</span></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>rawdata5 <span class="ot">&lt;-</span> rawdata5 <span class="sc">%&gt;%</span></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">"unnamed_"</span>))</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Bring rownames (species) back as a real column</span></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>rawdata5_fixed <span class="ot">&lt;-</span> rawdata5 <span class="sc">%&gt;%</span></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"species"</span>)</span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Build long format</span></span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>species_long <span class="ot">&lt;-</span> rawdata5_fixed <span class="sc">%&gt;%</span></span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>species,</span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"trap_id"</span>,</span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"count"</span></span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_token =</span> stringr<span class="sc">::</span><span class="fu">str_extract</span>(trap_id, <span class="st">"^[a-z]+</span><span class="sc">\\</span><span class="st">d+"</span>),</span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">pair_num   =</span> <span class="fu">as.integer</span>(stringr<span class="sc">::</span><span class="fu">str_extract</span>(trap_id, <span class="st">"(?&lt;=_)</span><span class="sc">\\</span><span class="st">d+$"</span>)),</span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">arm        =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(stringr<span class="sc">::</span><span class="fu">str_detect</span>(trap_id, <span class="st">"_p_"</span>), <span class="st">"control"</span>, <span class="st">"treatment"</span>),</span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">blend      =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>      stringr<span class="sc">::</span><span class="fu">str_detect</span>(trap_id, <span class="st">"_b_a_"</span>) <span class="sc">~</span> <span class="st">"blend_a"</span>,</span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a>      stringr<span class="sc">::</span><span class="fu">str_detect</span>(trap_id, <span class="st">"_b_b_"</span>) <span class="sc">~</span> <span class="st">"blend_b"</span>,</span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">pair_id    =</span> <span class="fu">paste</span>(date_token, pair_num, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">count      =</span> tidyr<span class="sc">::</span><span class="fu">replace_na</span>(count, <span class="dv">0</span>)</span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(species_long)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "species"    "trap_id"    "count"      "date_token" "pair_num"  
+[6] "arm"        "blend"      "pair_id"   </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>species_long <span class="sc">%&gt;%</span> <span class="co"># check if there are any traps with missing date_token or pair_num, which would indicate a problem with the trap_id parsing</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">is.na</span>(date_token) <span class="sc">|</span> <span class="fu">is.na</span>(pair_num)) <span class="sc">%&gt;%</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(trap_id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 1
+# ℹ 1 variable: trap_id &lt;chr&gt;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># looks good</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) sanity check: each pair_id should have 1 treatment + 1 control trap</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>pair_check <span class="ot">&lt;-</span> species_long <span class="sc">%&gt;%</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(pair_id, arm, trap_id) <span class="sc">%&gt;%</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(pair_id, arm) <span class="sc">%&gt;%</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> arm, <span class="at">values_from =</span> n, <span class="at">values_fill =</span> <span class="dv">0</span>)</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>pair_check <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(treatment <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> control <span class="sc">!=</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 3
+# ℹ 3 variables: pair_id &lt;chr&gt;, control &lt;int&gt;, treatment &lt;int&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># replace NA counts with 0</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>species_long <span class="ot">&lt;-</span> species_long <span class="sc">%&gt;%</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">count =</span> tidyr<span class="sc">::</span><span class="fu">replace_na</span>(count, <span class="dv">0</span>))</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># confirm NAs are gone</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>species_long <span class="sc">%&gt;%</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">n_missing_count =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(count)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  n_missing_count
+            &lt;int&gt;
+1               0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>bad_pairs <span class="ot">&lt;-</span> pair_check <span class="sc">%&gt;%</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(control <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> treatment <span class="sc">!=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(pair_id)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>species_long_complete <span class="ot">&lt;-</span> species_long <span class="sc">%&gt;%</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>pair_id <span class="sc">%in%</span> bad_pairs)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>species_long_complete <span class="sc">%&gt;%</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(pair_id, arm, trap_id) <span class="sc">%&gt;%</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(pair_id, arm) <span class="sc">%&gt;%</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> arm, <span class="at">values_from =</span> n, <span class="at">values_fill =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(treatment <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">|</span> control <span class="sc">!=</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 3
+# ℹ 3 variables: pair_id &lt;chr&gt;, control &lt;int&gt;, treatment &lt;int&gt;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>dropped_pairs <span class="ot">&lt;-</span> species_long <span class="sc">%&gt;%</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(pair_id <span class="sc">%in%</span> bad_pairs) <span class="sc">%&gt;%</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(pair_id, arm, trap_id)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>dropped_pairs</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 3
+# ℹ 3 variables: pair_id &lt;chr&gt;, arm &lt;chr&gt;, trap_id &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now we can build up species1 using the cleaned and processed species_long_complete data</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>species1 <span class="ot">&lt;-</span> species_long <span class="sc">%&gt;%</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species, pair_id) <span class="sc">%&gt;%</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">blend =</span> dplyr<span class="sc">::</span><span class="fu">first</span>(stats<span class="sc">::</span><span class="fu">na.omit</span>(blend))) <span class="sc">%&gt;%</span>  <span class="co"># carry blend onto control row</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(species, date_token, pair_num, pair_id, blend, arm, count) <span class="sc">%&gt;%</span>  <span class="co"># &lt;-- drops trap_id</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> <span class="fu">c</span>(species, date_token, pair_num, pair_id, blend),</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> arm,</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> count,</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_fill =</span> <span class="dv">0</span></span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">diff  =</span> treatment <span class="sc">-</span> control,</span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">logRR =</span> <span class="fu">log</span>((treatment <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">/</span> (control <span class="sc">+</span> <span class="fl">0.5</span>))</span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(species1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 216
+Columns: 9
+$ species    &lt;chr&gt; "Ae_atlanticustor", "Ae_atlanticustor", "Ae_atlanticustor",…
+$ date_token &lt;chr&gt; "oct3", "oct1", "oct3", "oct7", "oct1", "sept24", "sept10",…
+$ pair_num   &lt;int&gt; 2, 3, 1, 2, 1, 2, 1, 2, 2, 3, 1, 2, 1, 2, 1, 2, 2, 3, 1, 2,…
+$ pair_id    &lt;chr&gt; "oct3_2", "oct1_3", "oct3_1", "oct7_2", "oct1_1", "sept24_2…
+$ blend      &lt;chr&gt; "blend_a", "blend_a", "blend_a", "blend_a", "blend_a", "ble…
+$ treatment  &lt;int&gt; 3, 8, 6, 0, 2, 3, 14, 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0…
+$ control    &lt;int&gt; 3, 0, 3, 1, 0, 1, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ diff       &lt;int&gt; 0, 8, 3, -1, 2, 2, 6, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0…
+$ logRR      &lt;dbl&gt; 0.0000000, 2.8332133, 0.6190392, -1.0986123, 1.6094379, 0.8…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check all totals for species and pair_id combinations are correct. total of treatment + control should match sum counts across arms in species long</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>long_totals <span class="ot">&lt;-</span> species_long <span class="sc">%&gt;%</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species, pair_id) <span class="sc">%&gt;%</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">total_long =</span> <span class="fu">sum</span>(count), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>wide_totals <span class="ot">&lt;-</span> species1 <span class="sc">%&gt;%</span></span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">total_wide =</span> treatment <span class="sc">+</span> control) <span class="sc">%&gt;%</span></span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(species, pair_id, total_wide)</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>check_totals <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(long_totals, wide_totals, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"pair_id"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">match =</span> total_long <span class="sc">==</span> total_wide)</span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>check_totals <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>match)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 5
+# ℹ 5 variables: species &lt;chr&gt;, pair_id &lt;chr&gt;, total_long &lt;int&gt;,
+#   total_wide &lt;int&gt;, match &lt;lgl&gt;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># i consider this done now, lets just double check names and whatnot</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(species1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "species"    "date_token" "pair_num"   "pair_id"    "blend"     
+[6] "treatment"  "control"    "diff"       "logRR"     </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(species1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [216 × 9] (S3: tbl_df/tbl/data.frame)
+ $ species   : chr [1:216] "Ae_atlanticustor" "Ae_atlanticustor" "Ae_atlanticustor" "Ae_atlanticustor" ...
+ $ date_token: chr [1:216] "oct3" "oct1" "oct3" "oct7" ...
+ $ pair_num  : int [1:216] 2 3 1 2 1 2 1 2 2 3 ...
+ $ pair_id   : chr [1:216] "oct3_2" "oct1_3" "oct3_1" "oct7_2" ...
+ $ blend     : chr [1:216] "blend_a" "blend_a" "blend_a" "blend_a" ...
+ $ treatment : int [1:216] 3 8 6 0 2 3 14 5 0 0 ...
+ $ control   : int [1:216] 3 0 3 1 0 1 8 2 0 0 ...
+ $ diff      : int [1:216] 0 8 3 -1 2 2 6 3 0 0 ...
+ $ logRR     : num [1:216] 0 2.833 0.619 -1.099 1.609 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(species1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+  species       date_token pair_num pair_id blend treatment control  diff  logRR
+  &lt;chr&gt;         &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt;   &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+1 Ae_atlanticu… oct3              2 oct3_2  blen…         3       3     0  0    
+2 Ae_atlanticu… oct1              3 oct1_3  blen…         8       0     8  2.83 
+3 Ae_atlanticu… oct3              1 oct3_1  blen…         6       3     3  0.619
+4 Ae_atlanticu… oct7              2 oct7_2  blen…         0       1    -1 -1.10 
+5 Ae_atlanticu… oct1              1 oct1_1  blen…         2       0     2  1.61 
+6 Ae_atlanticu… sept24            2 sept24… blen…         3       1     2  0.847</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save the cleaned species data in the processed-data folder</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>save_data_location5 <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed-data"</span>, <span class="st">"species1.rds"</span>)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(species1, <span class="at">file =</span> save_data_location5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="clean-data-4.-identifications-data-rawdata3" class="level1">
+<h1>Clean data 4. identifications-data (rawdata3)</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cleaning up rawdata3 a.k.a. identifications-data</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="co"># need to pivot longer to get species in one column and counts in another, and then extract date, pair_num, arm, blend info from the trap_id column</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>identification_long <span class="ot">&lt;-</span> rawdata3 <span class="sc">%&gt;%</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>X) <span class="sc">%&gt;%</span>                        <span class="co"># drop junk column</span></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">species =</span> Species) <span class="sc">%&gt;%</span>         <span class="co"># standardize name</span></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>species,</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"trap_id"</span>,</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"count"</span></span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">trap_id    =</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(trap_id, <span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">d+$"</span>, <span class="st">""</span>),  <span class="co"># collapse .1 duplicates</span></span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_token =</span> stringr<span class="sc">::</span><span class="fu">str_extract</span>(trap_id, <span class="st">"^[a-z]+</span><span class="sc">\\</span><span class="st">d+"</span>),</span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">pair_num   =</span> <span class="fu">as.integer</span>(stringr<span class="sc">::</span><span class="fu">str_extract</span>(trap_id, <span class="st">"(?&lt;=_)</span><span class="sc">\\</span><span class="st">d+$"</span>)),</span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">arm        =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(stringr<span class="sc">::</span><span class="fu">str_detect</span>(trap_id, <span class="st">"_p_"</span>), <span class="st">"control"</span>, <span class="st">"treatment"</span>),</span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">blend      =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a>      stringr<span class="sc">::</span><span class="fu">str_detect</span>(trap_id, <span class="st">"_b_a_"</span>) <span class="sc">~</span> <span class="st">"blend_a"</span>,</span>
+<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a>      stringr<span class="sc">::</span><span class="fu">str_detect</span>(trap_id, <span class="st">"_b_b_"</span>) <span class="sc">~</span> <span class="st">"blend_b"</span>,</span>
+<span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb65-21"><a href="#cb65-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">pair_id    =</span> <span class="fu">paste</span>(date_token, pair_num, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<span id="cb65-22"><a href="#cb65-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">count      =</span> tidyr<span class="sc">::</span><span class="fu">replace_na</span>(count, <span class="dv">0</span>)</span>
+<span id="cb65-23"><a href="#cb65-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb65-24"><a href="#cb65-24" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(identification_long)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "species"    "trap_id"    "count"      "date_token" "pair_num"  
+[6] "arm"        "blend"      "pair_id"   </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co">#build `identification1` (paired wide; sums duplicates; keeps incomplete pairs)</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>identification1 <span class="ot">&lt;-</span> identification_long <span class="sc">%&gt;%</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species, pair_id) <span class="sc">%&gt;%</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">blend_pair =</span> dplyr<span class="sc">::</span><span class="fu">first</span>(stats<span class="sc">::</span><span class="fu">na.omit</span>(blend)),</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_token =</span> dplyr<span class="sc">::</span><span class="fu">first</span>(date_token),</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">pair_num   =</span> dplyr<span class="sc">::</span><span class="fu">first</span>(pair_num)</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(species, date_token, pair_num, pair_id, blend_pair, arm) <span class="sc">%&gt;%</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> <span class="fu">c</span>(species, date_token, pair_num, pair_id, blend_pair),</span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> arm,</span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> count,</span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_fill =</span> <span class="dv">0</span></span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">blend =</span> blend_pair) <span class="sc">%&gt;%</span></span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">diff  =</span> treatment <span class="sc">-</span> control,</span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">logRR =</span> <span class="fu">log</span>((treatment <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">/</span> (control <span class="sc">+</span> <span class="fl">0.5</span>))</span>
+<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-24"><a href="#cb67-24" aria-hidden="true" tabindex="-1"></a><span class="co"># should now be unique per species x pair_id</span></span>
+<span id="cb67-25"><a href="#cb67-25" aria-hidden="true" tabindex="-1"></a>identification1 <span class="sc">%&gt;%</span></span>
+<span id="cb67-26"><a href="#cb67-26" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(species, pair_id) <span class="sc">%&gt;%</span></span>
+<span id="cb67-27"><a href="#cb67-27" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 3
+# ℹ 3 variables: species &lt;chr&gt;, pair_id &lt;chr&gt;, n &lt;int&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save the cleaned species data in the processed-data folder</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>save_data_location3 <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed-data"</span>, <span class="st">"identification1.rds"</span>)</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(identification1, <span class="at">file =</span> save_data_location3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now all cleaned data can be found in the processed-data folder as RDS files. We can load those into our exploratory data analysis and modeling scripts to do the rest of the work.</p>
+<p>To note, I did not ‘clean’ the ornithophilicity-text data since it’s already pretty clean and ready to use as is for simple descriptions, but can be adjusted later if needed.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -11,7 +11,7 @@ bibliography: ../../assets/dataanalysis-references.bib
 csl: ../../assets/american-journal-of-epidemiology.csl
 ---
 
-
+THIS SECTION IS INTENTIONALLY LEFT UNTOUCHED. I have not decided if I will keep this template and solely work in `manuscript` or copy it over. For now I just want to keep the structure intact so that I can make that decision later without having to clone and redownload this .qmd from the original template.
 
 
 The structure below is one possible setup for a report stemming from a data analysis project. It loosely follows the structure of a standard scientific manuscript. Adjust as needed. 

@@ -1,62 +1,58 @@
 ---
-title: "An example exploratory analysis script"
-date: "2024-02-07"
+title: "An exploratory analysis of mosquito abundance and species composition by trap height and blend type"
+date: "2026-02-20"
 output: html_document
 ---
-
-  
-  
-This Quarto file loads the cleaned data and does some exploring.
-
-This version has the code inside the Quarto file itself.
-
-Also note that while cleaning and exploring is split here, this is iterative. You saw that as part of the processing, we already had to explore the data somewhat to understand how to clean it. In general, as you explore, you'll find things that need cleaning. As you clean, you can explore more. Therefore, at times it might make more sense to combine the cleaning and exploring code parts into a single R or Quarto file. Or split things in any other logical way.
-
-As part of the exploratory analysis, you should produce plots or tables or other summary quantities for the most interesting/important quantities in your data. Depending on the total number of variables in your dataset, explore all or some of the others. Figures produced here might be histograms or density plots, correlation plots, etc. Tables might summarize your data.
-
-Start by exploring one variable at a time. Then continue by creating plots or tables of the outcome(s) of interest and the predictor/exposure/input variables you are most interested in. If your dataset is small, you can do that for all variables. 
-
-Plots produced here can be scatterplots, boxplots, violinplots, etc. Tables can be simple 2x2 tables or larger ones.
+Below is my exploratory data analysis. The script was developed in `edacode.R` first and pulled into this Quarto file. Unlike `edacode.R`, this file includes actual thought processes regarding the figures and tables created. Figures are not saved in this file, but they are in `edacode.R`. The code in this file is not meant to be run as is, but rather to show how one might write up an EDA process, though it could run if you so chose to.
 
 # Setup
 
+Load necessary packages. 
 ```{r}
 #load needed packages. make sure they are installed.
-library(here) #for data loading/saving
+library(here) 
 library(dplyr)
 library(skimr)
 library(ggplot2)
+library(gt)
+library(tidyr)
+library(knitr)
 ```
 
-
-Load the data.
-
+Load in the cleaned data.
 ```{r}
-#Path to data. Note the use of the here() package and not absolute paths
-data_location <- here::here("data","processed-data","processeddata.rds")
-#load data
-mydata <- readRDS(data_location)
+# Load cleaned data
+blend1 <- readRDS(here::here("data","processed-data","blend1.rds"))
+species1 <- readRDS(here::here("data","processed-data","species1.rds"))
+identification1 <- readRDS(here::here("data","processed-data","identification1.rds"))
+height1 <- readRDS(here::here("data","processed-data","height1.rds")) 
 ```
-
-
-
-
+```{r}
+# Take a look at the data and structure.
+head(blend1)
+head(species1)
+str(identification1)
+str(height1)
+```
 
 # Data exploration through tables
 
-Showing a bit of code to produce and save a summary table.
-
-
 ```{r}
-summary_df = skimr::skim(mydata)
-print(summary_df)
-# save to file
-summarytable_file = here("results", "tables", "summarytable.rds")
-saveRDS(summary_df, file = summarytable_file)
+# file paths
+abt_rds <- here::here("results", "tables", "abundance-height-table.rds")
+pah_rds <- here::here("results", "tables", "pooled-abundance-height.rds")
+
+# load rds tables
+abundance_height_table <- readRDS(abt_rds)
+pooled_abundance_height <- readRDS(pah_rds)
+
+abundance_height_table # this table shows total mosquito abundance by height/date.
+pooled_abundance_height # this table shows total pooled counts across all trap events.
 ```
 
-We are saving the results to the `results` folder. Depending on how many tables/figures you have, it might make sense to have separate folders for each. And/or you could have separate folders for exploratory tables/figures and for final tables/figures. Just choose a setup that makes sense for your project and works for you, and provide enough documentation that someone can understand what you are doing.
+Here, I have two tables that summarize mosquito abundance by height. The first one shows the abundance by height and date, while the second one pools all data together to show total abundance. I have two few trapping events to calculate meaningful means here, so totals will have to do for now. 
 
+While we see marginally more mosquitoes in the canopy compared to midlevel, this difference does not appear to be statistically significant.
 
 # Data exploration through figures
 
@@ -65,43 +61,76 @@ Histogram plots for the continuous outcomes.
 Height first.
 
 ```{r}
-p1 <- mydata %>% ggplot(aes(x=Height)) + geom_histogram() 
-plot(p1)
-figure_file = here("results", "figures","height-distribution.png")
-ggsave(filename = figure_file, plot=p1) 
+# paths to figures
+# file paths (in requested order)
+fig_abundance <- here::here("results","figures","eda-figures","abundance-height-boxplot.png")
+fig_pooled    <- here::here("results","figures","eda-figures","pooled-abundance-height.png")
+fig_topsp     <- here::here("results","figures","eda-figures","top-species-blend.png")
+lm_rds        <- here::here("results","figures","eda-figures","lm-logRR-blend-all.rds")
+fig_fit_all   <- here::here("results","figures","eda-figures","fit-species-blend-all.png")
 ```
-
-Now weights.
 
 ```{r}
-p2 <- mydata %>% ggplot(aes(x=Weight)) + geom_histogram() 
-plot(p2)
-figure_file = here("results", "figures","weight-distribution.png")
-ggsave(filename = figure_file, plot=p2) 
-```
+abundance_height_boxplot <- here::here("results","figures","eda-figures","abundance-height-boxplot.png")
 
-Now height as function of weight.
+file.exists(abundance_height_boxplot)   # should be TRUE
+knitr::include_graphics(abundance_height_boxplot)
+```
 
 ```{r}
-p3 <- mydata %>% ggplot(aes(x=Height, y=Weight)) + geom_point() + geom_smooth(method='lm')
-plot(p3)
-figure_file = here("results", "figures", "height-weight.png")
-ggsave(filename = figure_file, plot=p3) 
-```
+#There appeared to be some sort of issue with figure images not loading. This section done again by chatgpt5.2
+dir.create("eda-assets", showWarnings = FALSE)
 
-Once more height as function of weight, stratified by gender. Note that there is so little data, it's a bit silly. But we'll plot it anyway.
+file.copy(
+  here::here("results","figures","eda-figures","abundance-height-boxplot.png"),
+  "eda-assets/abundance-height-boxplot.png",
+  overwrite = TRUE
+)
+
+file.copy(
+  here::here("results","figures","eda-figures","pooled-abundance-height.png"),
+  "eda-assets/pooled-abundance-height.png",
+  overwrite = TRUE
+)
+
+file.copy(
+  here::here("results","figures","eda-figures","top-species-blend.png"),
+  "eda-assets/top-species-blend.png",
+  overwrite = TRUE
+)
+
+file.copy(
+  here::here("results","figures","eda-figures","fit-species-blend-all.png"),
+  "eda-assets/fit-species-blend-all.png",
+  overwrite = TRUE
+)
+```
 
 ```{r}
-p4 <- mydata %>% ggplot(aes(x=Height, y=Weight, color = Gender)) + geom_point() + geom_smooth(method='lm')
-plot(p4)
-figure_file = here("results", "figures", "height-weight-stratified.png")
-ggsave(filename = figure_file, plot=p4) 
+knitr::include_graphics("eda-assets/abundance-height-boxplot.png")
 ```
 
+For the `height1` dataset, I created a boxplot to visualize the distribution of mosquito abundance by height. Higher trap height is denoted by `canopy (10ft)` and lower trap height is denoted by `midlevel (4–6ft)`. The boxplot shows that there is some variability in mosquitoes per trap-night, but it doesn't appear to be significant. Then again, there are <5 trap nights, so we can't really draw conclusions from this figure.
 
+```{r}
+knitr::include_graphics("eda-assets/top-species-blend.png")
+```
+
+Here I wanted to see which mosquito species were most abundant across all trapping events. As a reminder, traps were set up in treatment and control pairs. It's pretty clear than Uranotaenia sapphirinia is the most abundant species regardless of blend type, with strong preference for `blend_a` over control when compared to `blend_b` vs control.
+
+It also appears that many of the most abundant species are more abundant in `blend_a` than `blend_b` proportionally. What strikes me as odd is that for `blend_b`, the most abundant species seem to favor treatment, but the trend appears to reverse as mean mosquitoes per trap pair decreases. This is something to look into further, but it could be due to the fact that there are fewer mosquitoes in `blend_b` overall, so the most abundant species are more likely to be found in treatment traps by chance. Either way, I was surprised at how much of a difference there was in species abundance between the two blends, and I want to explore this further with some modeling. 
+
+Ur. sapphirinia is my most abundant species, but I cannot express how intriguing this is! I hope to dive more into this species, via literature and this analysis, as we continue. If you get the chance-- look up a picture of them. Very aesthetically pleasing.
+
+```{r}
+knitr::include_graphics("eda-assets/fit-species-blend-all.png")
+```
+
+This is my biggest lm fit to date. I wanted to see how the log response ratio (logRR) of treatment vs control varied across species and blend type. I included all species in this figure, though top 10 may have been enough.
+
+To explain, the logRR is calculated as log(treatment+0.5/control+0.5) to avoid log(0) issues since there are bound to be zero-values in my data as not every species will be found in every trap at every event, and the zeros are too meaningful to clean out. Each panel is 1 species, with each grey dot is 1 trap pair for species. A logRR of 0 means no effect, >0 means blend caught more, <0 means given blend caught fewer. The blue line indicates which blend type elicits a stronger response for each species. For example, if the blue line is above 0, that means `blend_a` caught more of that species than control on average, and if it's below 0, that means `blend_b` caught more of that species than control on average.
+
+This graph is simply too massive, so I will need to break this down into smaller pieces. I think my next step should be to create separate figures for each blend type, and then maybe even separate figures for the top 10 most abundant species so it's easier on the eyes. However, I think this model fit is a good starting point to see how species respond to blends, and can be further extracted to look at specific species of interest, such as ornithophilic mosquitoes and more specifically, mosquitoes implicated or suspected to be involved in arbovirus transmission in association with birds (e.g., Culex spp, Cs. melanura, An. crucians comp, etc...)
 
 # Notes
-
-For your own explorations, tables and figures can be "quick and dirty". As long as you can see what's going on, there is no need to polish them. That's in contrast to figures you'll produce for your final products (paper, report, presentation, website, etc.). Those should look as nice, polished and easy to understand as possible.
-
-
+AI Disclaimer: Chatgpt5.2 was used to help load in and double check figures and for code for the plots. All words and interpretations are my own. 

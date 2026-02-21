@@ -1,12 +1,4 @@
 # code
+The processing-code (processing-code.Rmd) cleaned and reshaped the raw trap-pair datasets into easier to digest and analyze formats. It standardizes trap identifiers (e.g., oct3_b_a_2 paired with oct3_p_2), parses `date_token`, `pair_num`, and `pair_id`, and converts missing counts to zeros. The script outputs paired, wide datasets with treatment, control, and derived effect sizes (diff, logRR). The processed files are saved to data/processed-data/ as species1.rds, height1.rds and identification1.rds.
 
-This folder and sub-folders should contain all your code. This can be R or Quarto files (or files for other programming languages). 
-
-Place your files in the appropriate sub-folders. You can structure the folders as appropriate.
-
-You can either have fewer large scripts, or multiple scripts that do only specific actions. Those can be R or Quarto files (or some other language/format). In either case, document the scripts and what goes on in them so well that someone else (including future you) can easily figure out what is happening.
-
-The scripts should load the appropriate data (e.g. raw or processed), perform actions, and save results (e.g. processed data, figures, computed values) in the appropriate folders. Document somewhere what inputs each script takes and where output is placed. 
-
-If scripts need to be run in a specific order, document this. Either as comments in the script, or in a separate text file such as this readme file. Ideally of course in both locations.
-
+I may parse out the processing-code file to make it easier to read. But for now in the early stages it will stay.
