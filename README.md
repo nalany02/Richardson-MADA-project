@@ -1,22 +1,11 @@
-# Overview
-
-A template file and folder structure for a data analysis project/paper done with R/Quarto/GitHub. Other components (e.g., other programming languages) can be added as needed. 
-
-
-# Pre-requisites
-
-This is a template for a data analysis project using R, Quarto, GitHub and a reference manager that can handle BibTeX. Our recommendation for the reference manager is Zotero, with the Better BibTeX plugin/extension. It is also assumed that you have a word processor installed (e.g. MS Word or [LibreOffice](https://www.libreoffice.org/)). You need that software stack to make use of this template. To produce PDF output, you need a TeX distribution installed. You can use TinyTeX, following [these instructions.](https://quarto.org/docs/output-formats/pdf-basics.html)
-
+Hello and welcome to my MADA Spring 2026 Project repository!
 
 # Template structure and content
 
-The template comes with a folder structure and example files to illustrate the kinds of content you would place in the different folders. The following is a brief description of the contents. See the `readme` files in each folder for more details.
-
 * The `assets` folder contains files that are manually generated schematics/diagrams, BibTeX files, CSL style files, PDFs of references, and other such content. Basically add anything that needs to be part of your project but that doesn't fit into the other categories.
 
-* All code goes into the `code` folder and subfolders. Currently, there are 3 sub-folders that do different parts of an analysis. You can re-organize such that it makes most sense for your project. The folders contain small example files that do some data cleaning and analysis to illustrate the overall setup and workflow. See the readme files in those folders for details.
-
-* All data goes into the `data` folder and subfolders. Currently, there are 2 sub-folders that contain different versions of a simple example data set. You can re-organize such that it makes most sense for your project. 
+* All code goes into the `code` folder and subfolders. 
+* All data goes into the `data` folder and subfolders. 
 
 * The `products` folder and its subfolders should contain all _deliverables_, such as reports, manuscripts, presentations, posters, Shiny web apps, etc. Those should generally be made with Quarto/R. As needed, other formats can be used. A few examples are provided.
   - The  `manuscript` subfolder contains a template for a report written as Quarto file. If you access this repository as part of the [Modern Applied Data Science course](https://andreashandel.github.io/MADAcourse/), the sections are guides for your project. If you found your way to this repository outside the course, you might only be interested in seeing how the file pulls in results and references and generates a word document as output, without paying attention to the detailed structure. There is also a sub-folder containing an example for a supplementary material file.
@@ -34,32 +23,3 @@ The template comes with a folder structure and example files to illustrate the k
   * `data-analysis-template.Rproj` is a file that tells RStudio that this is the main folder for a project. Rename if you want.
   * a few "hidden" files and folders (they start with a `.` and depending on how your OS is configured, you might not see them). You can probably ignore them.
 
-
-
-
-# Naming conventions
-
-We try to follow these naming conventions for folders and files: 
-
-* Somewhat descriptive and easy to understand names.
-* Only lower-case letters (and numbers if needed). Words separated by a `-`. 
-
-For instance there is a folder called `analysis-code` with a file called `statistical-analysis.R` in it. We don't use `_` or blank spaces for separators. We also don't use CamelCase, only lower-case. Exceptions are made for standard file names or endings, for instance R scripts end in `.R` (instead of `.r`).
-
-
-# Package management
-
-The package [renv](https://rstudio.github.io/renv/index.html) helps to  manage R packages and increase chances of future reproducibility. Unfortunately, it creates some extra complexity and causes sometimes problems, especially for packages that are not on CRAN.
-
-You can decide to implement `renv` or not. This can happen at any stage, though earlier in the project is generally better.
-
-If you plan to use `renv`, start by reading [the introduction to `renv` article](https://rstudio.github.io/renv/articles/renv.html) so you know how to use it.
-
-
-# Getting started
-
-This is a GitHub template repository. The best way to get it and start using it is [by following these steps.](https://help.github.com/en/articles/creating-a-repository-from-a-template)
-
-Once you got the repository, you can check out the examples by executing them in order. First run the processing code, which will produce the processed data. Then run the EDA scripts and analysis scripts, which will take the processed data and produce some results. 
-
-Once you (re-)generated the results, you can explore the products. Those Quarto files pull in the generated results and display them. These files also pull in references from the `BibTeX` file and format them according to the CSL style.
